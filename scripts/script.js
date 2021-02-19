@@ -5,29 +5,30 @@ let next
 let previous
 let Prev = document.getElementById('prev')
 let Next = document.getElementById('next')
-
+let image = 1
+let clicked = false
 
 Next.addEventListener('click', function () {
+    clicked = false
+    clearPage()
     getAllPokemons(next)
-    createAllCards(pokemons)
     setLinks()
+
 })
 Prev.addEventListener('click', function () {
+    clicked = true
+    clearPage()
     getAllPokemons(previous)
-    createAllCards(pokemons)
     setLinks()
 })
 
 getAllPokemons(page1)
-window.onload = function () {
-    createAllCards(pokemons)
-    setLinks()
 
-}
 
 
 function getAllPokemons(url) {
- 
+
+
     fetch(url).then((response) => {
         if (!response) {
             throw Error("Error at response")
@@ -41,13 +42,17 @@ function getAllPokemons(url) {
         array.forEach(element => {
             pokemons.push(element)
         });
+        createAllCards(pokemons)
 
+        setLinks()
     })
 
 }
+
+
 function createAllCards(pokemons) {
 
-    let i = 1
+    clicked == true ? image -= 40 : image = image
     pokemons.forEach(pokemon => {
 
         let card = document.createElement('div')
@@ -57,12 +62,13 @@ function createAllCards(pokemons) {
 
         let imgCard = document.createElement('img')
         imgCard.classList.add('card-img-top')
-        imgCard.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + i + '.png'
+        imgCard.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/' + image + '.png'
         card.appendChild(imgCard)
 
         let cardBody = document.createElement('div')
         cardBody.classList.add('card-body')
         card.appendChild(cardBody)
+
         let title = document.createElement('h5')
         title.classList.add('card-title')
         title.classList.add('text-center')
@@ -71,8 +77,9 @@ function createAllCards(pokemons) {
         cardBody.appendChild(title)
 
         Row.appendChild(card)
-        i++
+        image++
     })
+    2
 }
 
 
@@ -87,16 +94,6 @@ function setLinks() {
 }
 
 function clearPage() {
-    pokemons = []
+    pokemons.length = 0
     Row.innerText = ' '
 }
-// <nav aria-label="...">
-// <ul class="pagination justify-content-center">
-//     <li class="page-item disabled ">
-//         <a class="page-link alert-primary" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
-//     </li>
-//     <li class="page-item">
-//         <a class="page-link alert-primary" href="#">Próximo</a>
-//     </li>
-// </ul>
-// </nav>
